@@ -1,0 +1,176 @@
+# Secure WebKit tracker domains.
+#
+# One entry per line. A domain also covers its subdomains. Accepted formats:
+#   example.com            plain domain
+#   0.0.0.0 example.com    hosts file
+#   ||example.com^         Adblock-style domain anchor
+#   @@example.com          allowlist (beats any blocklist entry)
+#
+# This is a small curated starter set of well-known advertising, analytics and
+# session-recording domains. It is deliberately conservative: only domains whose
+# sole purpose is tracking/advertising, so blocking them should not break sites.
+# For broader coverage append a larger list (EasyPrivacy, Peter Lowe's hosts)
+# and run `make rules`.
+
+# --- Google advertising & analytics
+doubleclick.net
+google-analytics.com
+googletagmanager.com
+googletagservices.com
+googlesyndication.com
+googleadservices.com
+adservice.google.com
+pagead2.googlesyndication.com
+analytics.google.com
+app-measurement.com
+2mdn.net
+admob.com
+
+# --- Meta / Facebook
+connect.facebook.net
+pixel.facebook.com
+an.facebook.com
+
+# --- Microsoft
+bat.bing.com
+clarity.ms
+ads.msn.com
+c.msn.com
+
+# --- Amazon / Yahoo / Verizon
+amazon-adsystem.com
+aax.amazon-adsystem.com
+ads.yahoo.com
+analytics.yahoo.com
+adtech.com
+advertising.com
+adtechus.com
+
+# --- Social pixels
+analytics.twitter.com
+ads-twitter.com
+static.ads-twitter.com
+ads-api.twitter.com
+analytics.tiktok.com
+business-api.tiktok.com
+ct.pinterest.com
+ads.pinterest.com
+px.ads.linkedin.com
+snap.licdn.com
+ads.linkedin.com
+sc-static.net
+tr.snapchat.com
+alb.reddit.com
+events.reddit.com
+ads.reddit.com
+
+# --- Ad exchanges, SSPs, DSPs
+adnxs.com
+rubiconproject.com
+pubmatic.com
+openx.net
+casalemedia.com
+indexww.com
+33across.com
+criteo.com
+criteo.net
+adsrvr.org
+bidswitch.net
+mathtag.com
+adform.net
+serving-sys.com
+smartadserver.com
+sharethrough.com
+yieldmo.com
+tapad.com
+turn.com
+contextweb.com
+lijit.com
+sovrn.com
+media.net
+teads.tv
+triplelift.com
+adsymptotic.com
+adition.com
+rfihub.com
+zemanta.com
+inmobi.com
+mookie1.com
+exelator.com
+eyeota.net
+
+# --- Native ads / content recommendation
+outbrain.com
+taboola.com
+revcontent.com
+mgid.com
+sponsoredtweets.com
+
+# --- Data management & identity graphs
+demdex.net
+krxd.net
+bluekai.com
+agkn.com
+rlcdn.com
+liadm.com
+everesttech.net
+omtrdc.net
+2o7.net
+ml314.com
+pippio.com
+addthis.com
+sharethis.com
+quantserve.com
+quantcount.com
+scorecardresearch.com
+imrworldwide.com
+adsafeprotected.com
+moatads.com
+doubleverify.com
+iasds01.com
+
+# --- Product & web analytics
+mixpanel.com
+mxpnl.com
+segment.io
+amplitude.com
+heapanalytics.com
+kissmetrics.com
+statcounter.com
+histats.com
+chartbeat.com
+chartbeat.net
+parsely.com
+cloudflareinsights.com
+newrelic.com
+nr-data.net
+mc.yandex.ru
+counter.yadro.ru
+hit.gemius.pl
+
+# --- Session replay & heatmaps
+hotjar.com
+hotjar.io
+fullstory.com
+mouseflow.com
+crazyegg.com
+luckyorange.com
+luckyorange.net
+inspectlet.com
+logrocket.com
+smartlook.com
+clicktale.net
+sessioncam.com
+decibelinsight.net
+
+# --- Marketing automation & tag management
+hs-analytics.net
+track.hubspot.com
+hs-scripts.com
+hs-banner.com
+hsadspixel.net
+munchkin.marketo.net
+pi.pardot.com
+tiqcdn.com
+ensighten.com
+bounceexchange.com

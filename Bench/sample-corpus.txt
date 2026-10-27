@@ -1,0 +1,133 @@
+# Labelled request corpus for `make bench`.
+#   <label> <first-party host or -> <url>
+# Labels: tracker (should be blocked), params (should be rewritten),
+#         clean (must be left alone).
+#
+# AUTHORED BY HAND to exercise the engine. The labels are the author's own, so
+# the percentages it produces describe this file, not real-world traffic. To
+# measure real traffic, export a HAR from Safari/Chrome and label it yourself.
+
+# --- third-party trackers on a news site
+tracker news.example.com https://www.google-analytics.com/analytics.js
+tracker news.example.com https://www.googletagmanager.com/gtm.js?id=GTM-ABC123
+tracker news.example.com https://stats.g.doubleclick.net/j/collect?v=1
+tracker news.example.com https://securepubads.g.doubleclick.net/tag/js/gpt.js
+tracker news.example.com https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js
+tracker news.example.com https://connect.facebook.net/en_US/fbevents.js
+tracker news.example.com https://bat.bing.com/bat.js
+tracker news.example.com https://static.ads-twitter.com/uwt.js
+tracker news.example.com https://analytics.tiktok.com/i18n/pixel/events.js
+tracker news.example.com https://px.ads.linkedin.com/collect?pid=12345
+tracker news.example.com https://sb.scorecardresearch.com/beacon.js
+tracker news.example.com https://pixel.quantserve.com/pixel/p-abc.gif
+tracker news.example.com https://static.hotjar.com/c/hotjar-123.js?sv=6
+tracker news.example.com https://script.hotjar.com/modules.js
+tracker news.example.com https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js
+tracker news.example.com https://api.mixpanel.com/track/?data=abc
+tracker news.example.com https://cdn.amplitude.com/libs/amplitude-8.js
+tracker news.example.com https://static.criteo.net/js/ld/publishertag.js
+tracker news.example.com https://widgets.outbrain.com/outbrain.js
+tracker news.example.com https://cdn.taboola.com/libtrc/example/loader.js
+tracker news.example.com https://ib.adnxs.com/getuid?https://x.example/sync
+tracker news.example.com https://c.amazon-adsystem.com/aax2/apstag.js
+tracker news.example.com https://dpm.demdex.net/id?d_visid_ver=4.4.1
+tracker news.example.com https://tags.bluekai.com/site/12345
+tracker news.example.com https://js-sec.indexww.com/ht/p/123.js
+tracker news.example.com https://htlb.casalemedia.com/cygnus?s=1
+tracker news.example.com https://ads.pubmatic.com/AdServer/js/showad.js
+tracker news.example.com https://fastlane.rubiconproject.com/a/api/fastlane.json
+tracker news.example.com https://ssum.casalemedia.com/usermatch
+tracker news.example.com https://us-u.openx.net/w/1.0/cm?id=1
+tracker news.example.com https://js.adsrvr.org/up_loader.1.1.0.js
+tracker news.example.com https://secure.adnxs.com/seg?add=1
+tracker news.example.com https://beacon.krxd.net/event.gif
+tracker news.example.com https://smetrics.example-brand.omtrdc.net/b/ss/abc/1
+tracker news.example.com https://cdn.segment.io/v1/projects/abc/settings
+tracker news.example.com https://ct.pinterest.com/v3/?tid=123
+tracker news.example.com https://tr.snapchat.com/config/com/abc.js
+tracker news.example.com https://alb.reddit.com/rp.gif?ts=1
+tracker news.example.com https://mc.yandex.ru/metrika/tag.js
+tracker news.example.com https://www.clarity.ms/tag/abc
+tracker news.example.com https://static.cloudflareinsights.com/beacon.min.js
+tracker news.example.com https://js-agent.newrelic.com/nr-spa-1.min.js
+tracker news.example.com https://bam.nr-data.net/events/1/abc
+tracker news.example.com https://cdn.mouseflow.com/projects/abc.js
+tracker news.example.com https://script.crazyegg.com/pages/scripts/0001/0001.js
+tracker news.example.com https://rs.fullstory.com/rec/page
+tracker news.example.com https://cdn.heapanalytics.com/js/heap-123.js
+tracker news.example.com https://s7.addthis.com/js/300/addthis_widget.js
+tracker news.example.com https://platform-api.sharethis.com/js/sharethis.js
+tracker news.example.com https://js.hs-scripts.com/12345.js
+tracker news.example.com https://track.hubspot.com/__ptq.gif
+tracker blog.example.org https://munchkin.marketo.net/munchkin.js
+tracker blog.example.org https://pi.pardot.com/pd.js
+tracker blog.example.org https://tags.tiqcdn.com/utag/acme/main/prod/utag.js
+tracker blog.example.org https://www.googleadservices.com/pagead/conversion.js
+tracker blog.example.org https://adservice.google.com/adsid/integrator.js
+tracker blog.example.org https://ads.yahoo.com/pixel?id=1
+tracker blog.example.org https://analytics.twitter.com/i/adsct?txn_id=1
+tracker blog.example.org https://cdn.chartbeat.net/js/chartbeat.js
+tracker blog.example.org https://static.chartbeat.com/js/chartbeat_video.js
+tracker blog.example.org https://cdn.logrocket.com/LogRocket.min.js
+tracker blog.example.org https://rec.smartlook.com/recorder.js
+tracker blog.example.org https://d.agkn.com/pixel/1234/
+tracker blog.example.org https://idsync.rlcdn.com/1000.gif
+tracker blog.example.org https://ei.rlcdn.com/1.gif
+tracker blog.example.org https://rtb.openx.net/openrtbb/prebidjs
+tracker blog.example.org https://ads.linkedin.com/collect
+tracker blog.example.org https://events.reddit.com/v1/events
+
+# --- tracking parameters on first-party navigations
+params - https://shop.example.com/item/42?utm_source=newsletter&utm_medium=email&utm_campaign=spring
+params - https://shop.example.com/item/42?id=7&fbclid=IwAR0abcdef
+params - https://www.example.org/article?gclid=Cj0KCQiA&ref=home
+params - https://www.example.org/search?q=shoes&msclkid=abcdef0123456789
+params - https://blog.example.net/post/hello-world?mc_eid=a1b2c3&mc_cid=d4e5f6
+params - https://store.example.com/p/9?color=red&_hsenc=p2ANqtz&_hsmi=123
+params - https://video.example.com/watch?v=abc123&utm_content=thumb#t=30
+params - https://www.example.com/?igshid=MzRlODBiNWFlZA==
+params - https://www.example.com/landing?hsa_acc=1&hsa_cam=2&hsa_grp=3
+params - https://www.example.com/a?twclid=23abc&ttclid=E.C.P.xyz
+params - https://www.example.com/a?pk_campaign=x&pk_kwd=y&page=2
+params - https://www.example.com/a?_ga=2.123.456&_gl=1*abc
+
+# --- clean requests that must not be touched
+clean news.example.com https://news.example.com/
+clean news.example.com https://news.example.com/article/12345?page=2&sort=date
+clean news.example.com https://cdn.news.example.com/assets/app.9f3a1.js
+clean news.example.com https://static.example-cdn.net/img/hero.webp
+clean news.example.com https://fonts.googleapis.com/css2?family=Inter:wght@400;700
+clean news.example.com https://fonts.gstatic.com/s/inter/v12/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2
+clean news.example.com https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js
+clean news.example.com https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js
+clean news.example.com https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js
+clean news.example.com https://www.youtube.com/embed/dQw4w9WgXcQ
+clean news.example.com https://player.vimeo.com/video/76979871
+clean news.example.com https://maps.googleapis.com/maps/api/js?key=abc
+clean news.example.com https://js.stripe.com/v3/
+clean news.example.com https://www.paypal.com/sdk/js?client-id=abc
+clean news.example.com https://challenges.cloudflare.com/turnstile/v0/api.js
+clean news.example.com https://www.google.com/recaptcha/api.js
+clean news.example.com https://platform.twitter.com/widgets.js
+clean news.example.com https://graph.facebook.com/v18.0/me?access_token=abc
+clean news.example.com https://s.yimg.com/uu/api/res/1.2/photo.jpg
+clean news.example.com https://images.unsplash.com/photo-1?w=800&q=80
+clean news.example.com https://avatars.githubusercontent.com/u/1?v=4
+clean shop.example.com https://shop.example.com/cart?item=5&qty=2
+clean shop.example.com https://shop.example.com/checkout?step=payment
+clean shop.example.com https://api.example.com/v1/products?limit=20&offset=40
+clean shop.example.com https://shop.example.com/search?q=utm+guide
+clean shop.example.com https://shop.example.com/p?refer=friend&source=app
+clean shop.example.com https://shop.example.com/redirect?next=%2Faccount
+clean docs.example.dev https://docs.example.dev/guide/getting-started#install
+clean docs.example.dev https://github.com/example/repo/issues/1
+clean docs.example.dev https://registry.npmjs.org/left-pad
+clean docs.example.dev https://raw.githubusercontent.com/example/repo/main/README.md
+clean docs.example.dev https://www.wikipedia.org/
+clean docs.example.dev https://en.wikipedia.org/wiki/Web_browser
+clean docs.example.dev https://example.com/
+clean docs.example.dev http://localhost:3000/api/health
+clean docs.example.dev http://192.168.1.10:8080/status
+clean docs.example.dev wss://realtime.example.dev/socket
+clean docs.example.dev https://notgoogle-analytics.com.example.dev/x
+clean docs.example.dev https://mixpanel.com.example.dev/x
