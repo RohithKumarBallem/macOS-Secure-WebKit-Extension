@@ -1,0 +1,11 @@
+// Build settings shared by both targets.
+
+// Identifier of the app group the app and extension use to share counters.
+// $(TeamIdentifierPrefix) is empty until a development team is set.
+SWK_APP_GROUP = $(TeamIdentifierPrefix)group.com.rohithkumarballem.SecureWebKit
+
+MACOSX_DEPLOYMENT_TARGET = 13.0
+HEADER_SEARCH_PATHS = $(SRCROOT)/Core/include $(SRCROOT)/Core/src $(SRCROOT)/Shared
+
+// Personal overrides (git-ignored): DEVELOPMENT_TEAM, bundle id prefix, ...
+#include? "Signing.local.xcconfig"
