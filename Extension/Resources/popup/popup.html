@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Secure WebKit</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <img src="../images/icon-48.png" alt="" width="28" height="28">
+    <div>
+      <h1>Secure WebKit</h1>
+      <p id="site" class="muted">—</p>
+    </div>
+  </header>
+
+  <section class="tiles" aria-label="This page">
+    <div class="tile"><span id="trackerCount" class="num">–</span><span class="label">trackers found</span></div>
+    <div class="tile"><span id="paramCount" class="num">–</span><span class="label">tracking params removed</span></div>
+  </section>
+
+  <section>
+    <h2>Tracker hosts on this page</h2>
+    <ul id="hostList"></ul>
+    <p id="empty" class="muted" hidden></p>
+  </section>
+
+  <footer>
+    <p id="lifetime" class="muted"></p>
+    <p class="muted small">Filtering runs locally. Nothing is sent off this Mac.</p>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>
