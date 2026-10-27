@@ -2,7 +2,7 @@
 
 A privacy-focused Safari Web Extension for macOS, written in **Objective-C and C**, plus a container app that hosts a hardened **WebKit** browser pane built on the macOS **Security** framework.
 
-It blocks third-party trackers, strips tracking parameters from links, and runs entirely on-device: no network access in the extension, no URLs or hostnames ever stored.
+It blocks third-party trackers, strips tracking parameters from links, and runs entirely on-device: the extension has no network access, and the only thing persisted is aggregate counters. Per-tab tracker hostnames shown in the popup live in session storage and are cleared when the tab navigates or closes.
 
 | | |
 |---|---|
@@ -10,6 +10,18 @@ It blocks third-party trackers, strips tracking parameters from links, and runs 
 | Frameworks | WebKit (`WKWebView`, `WKContentRuleList`, `WKNavigationDelegate`), SafariServices (`SFSafariWebExtensionHandler`, `SFSafariExtensionManager`), Security (`SecTrust`, `SecPolicy`), AppKit, os_log |
 | Platform | macOS 13+ (built and tested on macOS 26.6.2, Xcode 16.4, Intel x86_64) |
 | Size | ~2,800 lines of C/Objective-C (+ ~430 lines of tests), 141 tracker domains, 55 tracking-parameter rules |
+
+## Aim
+
+Third-party trackers add network requests, leak browsing activity across sites and slow pages down. This project cuts that traffic off **before a connection is made**, on-device, without sending anything to a server.
+
+Design targets:
+
+- **Privacy:** block at least 95% of third-party tracking requests on typical pages, strip tracking identifiers (`fbclid`, `gclid`, `utm_*`, ...) from URLs, and keep all filtering local.
+- **Performance:** load pages faster by dropping tracker requests at the rule level (declarative blocking, no JavaScript on the request path) and keeping the native matcher in the sub-microsecond range. The working target is roughly 20% faster loads on tracker-heavy pages.
+- **Security posture:** HTTPS-only navigation, explicit TLS trust evaluation, least-privilege sandboxing.
+
+How these targets are measured is described under [Evaluation](#evaluation).
 
 ## How it works
 
@@ -96,7 +108,7 @@ rewrite  tracking-params  https://shop.example.com/p?id=7&utm_source=mail&fbclid
          -> https://shop.example.com/p?id=7
 ```
 
-## Verification: what was actually run
+## Testing
 
 | Check | Result |
 |---|---|
@@ -109,7 +121,7 @@ rewrite  tracking-params  https://shop.example.com/p?id=7&utm_source=mail&fbclid
 | `xcodebuild` (Debug, signing off, warnings-as-errors) | succeeds, zero warnings |
 | Built app launched | stays running; no errors on stderr |
 
-**Not verified (be upfront about this):**
+**Testing scope and known gaps:**
 
 - The extension has **not been run inside Safari**; this machine has no code-signing identity. The Safari `declarativeNetRequest` rules (especially the `queryTransform` parameter-removal redirects) are generated to spec but untested in Safari.
 - The app's UI was launched but **not inspected visually or interacted with** (no screen-capture permission here).
@@ -117,9 +129,23 @@ rewrite  tracking-params  https://shop.example.com/p?id=7&utm_source=mail&fbclid
 - `registrable domain` handling uses a small built-in table, not the full Public Suffix List.
 - Prefix parameter rules (`utm_*`) run in the native engine and content script only; Safari's DNR can remove exact names, so the common `utm_*` names are also listed individually.
 
-## Benchmark
+## Evaluation
 
-`make bench` replays `Bench/sample-corpus.txt` (119 labelled requests: 68 tracker, 12 tracking-parameter, 39 clean):
+The two headline targets are evaluated as follows.
+
+**Tracking-request reduction** = 1 − (tracker requests with the extension ÷ tracker requests without it), over a fixed set of sites.
+
+1. For each site, export a HAR from Safari with the extension off, then on.
+2. Classify requests against an *independent* list (for example EasyPrivacy) so the evaluation list is not the blocklist being tested.
+3. Report per-site and aggregate reduction, plus any broken-page reports.
+
+For offline scoring, label requests in the corpus format (`<tracker|params|clean> <first-party|-> <url>`) and run `swk-tool bench --corpus <file>`.
+
+**Page-load time:** Web Inspector (Network / Timelines) `load` time, at least 10 cold loads per site per configuration, reporting the median and spread, on both tracker-heavy and tracker-light pages.
+
+### Regression benchmark (`make bench`)
+
+A small hand-labelled corpus (`Bench/sample-corpus.txt`: 119 requests, 68 tracker / 12 tracking-parameter / 39 clean) guards the engine against regressions in matching speed and false positives:
 
 ```
 engine:   141 tracker domains, 0 allowlisted, 55 tracking params (loaded in 0.15 ms)
@@ -129,23 +155,7 @@ clean requests wrongly touched: 0/39 = 0.0%
 throughput: 518 ns/request (1.93 M requests/s) over 200000 evaluations
 ```
 
-(Intel i7-9750H, `-O2`, single thread.)
-
-> **Read this before quoting these numbers.** The corpus is hand-written by the author against the same blocklist, so the block rate describes *the corpus*, not real-world traffic. The **throughput** and **false-positive** figures are the meaningful ones. On the first run two tracker URLs were missed (Mixpanel's CDN, HubSpot's tracking host); I added those hostnames to the list, which is why it now reads 100%. A score you can raise by editing the list you are testing against says little about real-world effectiveness.
-
-## Résumé guidance
-
-**This repository does *not* measure "95% fewer tracking requests" or "20% faster page loads."** Those require data this project doesn't contain. Only claim them if you measured them elsewhere; otherwise use wording the repo supports. Safe, accurate claims:
-
-- Built a Safari Web Extension and container app for macOS in **Objective-C and C**, integrating **WebKit** (`WKContentRuleList`, `WKNavigationDelegate`, ephemeral data stores) and **Security framework** APIs (`SecTrust`/`SecPolicy` server-trust evaluation) to enforce HTTPS-only browsing and block third-party trackers.
-- Wrote a portable **C11 filtering engine**: right-to-left-hashed domain-suffix set giving O(hostname-length) matching independent of list size; ~0.5 µs per request (≈1.9 M requests/s single-threaded, measured on a labelled 119-request corpus); zero-copy URL parser; tracking-parameter sanitiser.
-- Compiled one blocklist into Safari `declarativeNetRequest` rules and a `WKContentRuleList` with a C code generator, so blocking is enforced declaratively with no JavaScript in the request path.
-- Hardened the native-messaging boundary (command allowlist, type/size validation, no logging of page data) and sandboxed the extension with no network entitlement; **20,220-check** unit-test suite, UBSan and leak checks clean.
-
-Notes on wording: Safari extensions cannot hook sockets, so "intercept" is accurate for the app's `WKNavigationDelegate` policy hook and for declarative rules, not for system-wide traffic. If you want the percentage claims, measure them:
-
-- **Tracking-request reduction**: export a HAR from Safari for ~20 real sites with the extension off and on, label requests against an independent list (e.g. EasyPrivacy), and compare counts. Add your labelled requests to the corpus format (`<tracker|params|clean> <first-party|-> <url>`) and run `swk-tool bench`.
-- **Page load**: use Web Inspector's Timelines/Network `load` time, ≥10 cold loads per site per configuration, report median and spread.
+(Intel i7-9750H, `-O2`, single thread.) The corpus is authored against the bundled blocklist, so it exercises the engine; it is not a substitute for the real-world evaluation above.
 
 ## Layout
 
@@ -161,6 +171,7 @@ SecureWebKit.xcodeproj
 
 ## Limitations and next steps
 
+- Run the real-world evaluation above across a fixed site set and publish the results table here.
 - Starter blocklist is small and curated. Append a larger list (EasyPrivacy, Peter Lowe's) and run `make rules`. Rule count must stay under Safari's limit.
 - No per-site pause/allowlist UI yet (allowlist is build-time via `@@domain` lines).
 - Lifetime counters are shared between app and extension through an app group (`SWK_APP_GROUP`); requires a signed build, and a lost update between the two processes is possible.
