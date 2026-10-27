@@ -1,0 +1,15 @@
+# Build output
+build/
+DerivedData/
+*.o
+
+# Xcode
+xcuserdata/
+*.xcuserstate
+*.xcworkspace/xcuserdata/
+
+# Personal signing config
+Config/Signing.local.xcconfig
+
+# macOS
+.DS_Store
